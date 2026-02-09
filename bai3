@@ -1,0 +1,36 @@
+public class TV {
+    public void on() {
+        System.out.println("TV is ON");
+    }
+}
+public class SoundSystem {
+    public void on() {
+        System.out.println("Sound System is ON");
+    }
+}
+public class DVDPlayer {
+    public void on() {
+        System.out.println("DVD Player is ON");
+    }
+}
+public class HomeTheaterFacade {
+
+    private TV tv;
+    private SoundSystem sound;
+    private DVDPlayer dvd;
+
+    public HomeTheaterFacade(TV tv, SoundSystem sound, DVDPlayer dvd) {
+        this.tv = tv;
+        this.sound = sound;
+        this.dvd = dvd;
+    }
+
+    public void watchMovie() {
+        System.out.println("Get ready to watch a movie...");
+        tv.on();
+        sound.on();
+        dvd.on();
+        System.out.println("Movie started!");
+    }
+}
+
