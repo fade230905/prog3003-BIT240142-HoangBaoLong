@@ -1,0 +1,43 @@
+import java.util.Arrays;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.stream.Collectors;
+
+public class CompletableFutureExample {
+    public static void main(String[] args) {
+        CompletableFuture<int[]> arrayFuture = CompletableFuture.supplyAsync(() -> {
+            System.out.println("B1: Cung cấp array...");
+            return new int[]{1, 2, 5, 3, 100};
+        });
+        
+
+        CompletableFuture<List<Integer>> oddSortedFuture = arrayFuture.thenApplyAsync(array -> {
+            System.out.println("B2: Lọc số lẻ và sắp xếp...");
+            return Arrays.stream(array)
+                    .filter(n -> n % 2 != 0)
+                    .sorted()
+                    .boxed()
+                    .collect(Collectors.toList());
+        });
+        
+        CompletableFuture<String> resultStringFuture = oddSortedFuture.thenApplyAsync(list -> {
+            System.out.println("B3: Chuyển thành chuỗi...");
+            return "Kết quả là: " + list.toString();
+        });
+        
+        resultStringFuture.thenAcceptAsync(result -> {
+            System.out.println("B4: In kết quả...");
+            System.out.println(result);
+        }).join(); 
+        
+        CompletableFuture.supplyAsync(() -> new int[]{1, 2, 5, 3, 100})
+                .thenApplyAsync(array -> Arrays.stream(array)
+                        .filter(n -> n % 2 != 0)
+                        .sorted()
+                        .boxed()
+                        .collect(Collectors.toList()))
+                .thenApplyAsync(list -> "Kết quả là: " + list.toString())
+                .thenAcceptAsync(System.out::println)
+                .join();
+    }
+}

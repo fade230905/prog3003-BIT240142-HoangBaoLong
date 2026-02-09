@@ -1,0 +1,23 @@
+class WorkerThread extends Thread {
+    @Override
+    public void run() {
+        System.out.println("Thread đang chạy...");
+    }
+}
+
+class WorkerRunnable implements Runnable {
+    @Override
+    public void run() {
+        System.out.println("Runnable đang chạy...");
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        WorkerThread thread1 = new WorkerThread();
+        thread1.start();
+        
+        Thread thread2 = new Thread(new WorkerRunnable());
+        thread2.start();
+    }
+}
