@@ -1,15 +1,20 @@
-import java.util.TreeSet;
+public class GenericExample {
 
-public class TreeSetExample {
+    public static <E> void printArray(E[] array) {
+        for (E element : array) {
+            System.out.print(element + " ");
+        }
+        System.out.println();
+    }
+
     public static void main(String[] args) {
-        TreeSet<String> names = new TreeSet<>();
-        names.add("John");
-        names.add("Alice");
-        names.add("Zack");
-        names.add("Bob");
-        System.out.println("Danh sách TreeSet: " + names);
+        Integer[] intArray = {1, 2, 3, 4};
+        String[] strArray = {"Java", "Python", "C++"};
 
-        System.out.println("Phần tử nhỏ nhất (First): " + names.first());
-        System.out.println("Phần tử lớn nhất (Last): " + names.last());
+        System.out.println("Integer Array:");
+        printArray(intArray);
+
+        System.out.println("String Array:");
+        printArray(strArray);
     }
 }

@@ -1,48 +1,43 @@
-class Computer {
-    // Required parameters
-    private String HDD;
-    private String RAM;
-    // Optional parameters
-    private boolean isBluetoothEnabled;
+// Interface
+interface MessageService {
+    void sendMessage(String message);
+}
 
-    private Computer(ComputerBuilder builder) {
-        this.HDD = builder.HDD;
-        this.RAM = builder.RAM;
-        this.isBluetoothEnabled = builder.isBluetoothEnabled;
-    }
-
+// Email Service
+class EmailService implements MessageService {
     @Override
-    public String toString() {
-        return "Computer [RAM=" + RAM + ", HDD=" + HDD + ", Bluetooth=" + isBluetoothEnabled + "]";
-    }
-
-    public static class ComputerBuilder {
-        private String HDD;
-        private String RAM;
-        private boolean isBluetoothEnabled;
-
-        public ComputerBuilder(String hdd, String ram) {
-            this.HDD = hdd;
-            this.RAM = ram;
-        }
-
-        public ComputerBuilder setBluetoothEnabled(boolean isBluetoothEnabled) {
-            this.isBluetoothEnabled = isBluetoothEnabled;
-            return this;
-        }
-
-        public Computer build() {
-            return new Computer(this);
-        }
+    public void sendMessage(String message) {
+        System.out.println("Sending Email: " + message);
     }
 }
 
-public class Main {
-    public static void main(String[] args) {
-        Computer gamingPC = new Computer.ComputerBuilder("1TB", "32GB").setBluetoothEnabled(true).build();
-        Computer officePC = new Computer.ComputerBuilder("256GB", "8GB").build();
+class SMSService implements MessageService {
+    @Override
+    public void sendMessage(String message) {
+        System.out.println("Sending SMS: " + message);
+    }
+}
 
-        System.out.println(gamingPC);
-        System.out.println(officePC);
+class Notification {
+    private MessageService messageService;
+
+    public void setMessageService(MessageService messageService) {
+        this.messageService = messageService;
+    }
+
+    public void notifyUser(String message) {
+        messageService.sendMessage(message);
+    }
+}
+
+public class MainApp {
+    public static void main(String[] args) {
+
+        Notification notification = new Notification();
+        notification.setMessageService(new EmailService());
+        notification.notifyUser("Hello via Email!");
+
+        notification.setMessageService(new SMSService());
+        notification.notifyUser("Hello via SMS!");
     }
 }

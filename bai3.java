@@ -1,27 +1,42 @@
-import java.util.concurrent.CompletableFuture;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class MovieTicketSystem {
-    public static void main(String[] args) throws Exception {
-        CompletableFuture<String> authTask = CompletableFuture.supplyAsync(() -> {
-            simulateDelay(1000);
-            System.out.println("1. Xác thực khách hàng thành công.");
-            return "Khách hàng: Nguyễn Văn A";
-        });
+class Employee {
+    private int id;
+    private String name;
+    private double salary;
 
-        CompletableFuture<String> ticketTask = CompletableFuture.supplyAsync(() -> {
-            simulateDelay(2000);
-            System.out.println("2. Vé đã được tạo.");
-            return "Vé Phim: Avengers";
-        });
-        CompletableFuture<String> finalProcess = authTask.thenCombine(ticketTask, (auth, ticket) -> {
-            return "Hoàn tất đặt vé cho [" + auth + "] - [" + ticket + "]";
-        });
-
-        System.out.println("Đang xử lý...");
-        System.out.println(finalProcess.get());
+    public Employee(int id, String name, double salary) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
     }
 
-    private static void simulateDelay(int ms) {
-        try { Thread.sleep(ms); } catch (InterruptedException e) { e.printStackTrace(); }
+    public String getName() {
+        return name;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+}
+
+public class StreamExample {
+    public static void main(String[] args) {
+
+        List<Employee> employees = Arrays.asList(
+            new Employee(1, "An", 800),
+            new Employee(2, "Binh", 1200),
+            new Employee(3, "Cuong", 1500),
+            new Employee(4, "Dung", 900)
+        );
+
+        List<String> result = employees.stream()
+                .filter(e -> e.getSalary() > 1000)
+                .map(Employee::getName)
+                .sorted()
+                .collect(Collectors.toList());
+
+        System.out.println(result);
     }
 }
