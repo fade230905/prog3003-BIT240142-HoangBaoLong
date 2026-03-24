@@ -1,20 +1,26 @@
-public class GenericExample {
-
-    public static <E> void printArray(E[] array) {
-        for (E element : array) {
-            System.out.print(element + " ");
-        }
-        System.out.println();
-    }
-
+@FunctionalInterface
+interface MathOperation {
+    int compute(int a, int b);
+}
+public class Main {
     public static void main(String[] args) {
-        Integer[] intArray = {1, 2, 3, 4};
-        String[] strArray = {"Java", "Python", "C++"};
 
-        System.out.println("Integer Array:");
-        printArray(intArray);
+        MathOperation add = (a, b) -> a + b;
 
-        System.out.println("String Array:");
-        printArray(strArray);
+        MathOperation subtract = (a, b) -> a - b;
+
+        MathOperation multiply = (a, b) -> a * b;
+
+        MathOperation divide = (a, b) -> {
+            if (b == 0) {
+                throw new ArithmeticException("Không thể chia cho 0");
+            }
+            return a / b;
+        };
+
+        System.out.println("Cộng: " + add.compute(10, 5));
+        System.out.println("Trừ: " + subtract.compute(10, 5));
+        System.out.println("Nhân: " + multiply.compute(10, 5));
+        System.out.println("Chia: " + divide.compute(10, 5));
     }
 }
